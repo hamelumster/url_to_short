@@ -13,7 +13,8 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(default=func.now())
     updated_at: Mapped[datetime] = mapped_column(default=func.now(), onupdate=func.now())
 
-    input_urls: Mapped[list["Url"]] = relationship(back_populates="user")
+    input_urls: Mapped[list["InputUrl"]] = relationship("InputUrl", back_populates="user")
+    output_urls: Mapped[list["OutputUrl"]] = relationship("OutputUrl", back_populates="user")
 
 class InputUrl(Base):
     __tablename__ = "input_urls"
@@ -24,7 +25,7 @@ class InputUrl(Base):
     created_at: Mapped[datetime] = mapped_column(default=func.now())
 
     user: Mapped["User"] = relationship(back_populates="input_urls")
-    output_url: Mapped["OutputUrl"] = relationship(back_populates="input_url", uselist=False)
+    output_url: Mapped["OutputUrl"] = relationship("OutputUrl", back_populates="input_url", uselist=False)
 
 class OutputUrl(Base):
     __tablename__ = "output_urls"
@@ -35,4 +36,5 @@ class OutputUrl(Base):
     short_url: Mapped[str] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = mapped_column(default=func.now())
 
-    input_url: Mapped["InputUrl"] = relationship(back_populates="output_url")
+    input_url: Mapped["InputUrl"] = relationship("InputUrl", back_populates="output_url")
+    user: Mapped["user"] = relationship("User")
