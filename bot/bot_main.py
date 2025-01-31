@@ -24,7 +24,7 @@ class Bot:
         session = self.session()
         try:
             yield DatabaseManager(session)
-            await session.commit()  # Коммитим изменения после выхода из блока "with"
+            await session.commit()
         except Exception as e:
             await session.rollback()
             print(f"Ошибка в сессии БД: {e}")
@@ -45,7 +45,7 @@ class Bot:
                 output_entry = await db_manager.generate_short_url(input_entry)
 
             if output_entry:
-                await update.message.reply_text(f"✅ Ваша короткая ссылка:\n{output_entry.short_url}")
+                await update.message.reply_text(f"✅ Ваша короткая ссылка:\n\n{output_entry.short_url}")
             else:
                 await update.message.reply_text("📝 Введенный текст не является ссылкой.\n"
                                                 "Пожалуйста, пришли ссылку, которая начинается с http")
