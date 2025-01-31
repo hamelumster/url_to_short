@@ -63,5 +63,10 @@ class Bot:
             print(f"Ошибка в start: {str(e)}")
             await update.message.reply_text("⚠️ Ошибка сервера")
 
-    def run(self):
-        self.app.run_polling()
+    # def run(self):
+    #     self.app.run_polling()
+
+    # Метод, который будет обрабатывать входящие Webhook-обновления
+    async def process_update(self, update: dict):
+        telegram_update = Update.de_json(update, self.app.bot)
+        await self.app.process_update(telegram_update)
