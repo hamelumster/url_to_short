@@ -8,4 +8,4 @@ if __name__ == '__main__':
     token = os.getenv("TOKEN")
     print('Bot started!')
     bot = Bot(token)
-    bot.run()
+    # bot.run()
