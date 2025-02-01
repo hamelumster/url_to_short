@@ -38,8 +38,12 @@ class DatabaseManager:
             print("❌ Введённый текст не является ссылкой, короткая не создаётся.")
             return None
 
-        short_code = url_to_short_url(input_entry.text)
-        short_entry = OutputUrl(user_id=input_entry.user_id, input_url_id=input_entry.id, short_url=short_code)
+        short_url = url_to_short_url()
+        short_entry = OutputUrl(
+            user_id=input_entry.user_id,
+            input_url_id=input_entry.id,
+            short_url=short_url
+        )
 
         self.session.add(short_entry)
         await self.session.flush()
