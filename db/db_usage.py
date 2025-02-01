@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -44,3 +46,13 @@ class DatabaseManager:
         await self.session.commit()
 
         return short_entry
+
+    async def get_original_url(self, short_code: str) -> Optional[str]:
+        """Find original URL with short code. Return original URL"""
+        result = await self.session.execute(
+            select(OutputUrl).where(OutputUrl.short_url == short_code)
+        )
+        output_entry = result.scalar_one_or_none()
+        if output_entry and output_entry.input_url:
+            return output_entry.input_url.text
+        return None
