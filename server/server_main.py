@@ -15,7 +15,7 @@ bot = Bot(token)
 # Инициализируем FastAPI
 app = FastAPI()
 
-@app.on_event("starup")
+@app.on_event("startup")
 async def on_startup():
     # Инициализируем приложения бота
     await bot.app.initialize()
