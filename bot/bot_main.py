@@ -45,7 +45,7 @@ class Bot:
                 output_entry = await db_manager.generate_short_url(input_entry)
 
             if output_entry:
-                await update.message.reply_text(f"✅ Ваша короткая ссылка:\n\n{output_entry.short_url}")
+                await update.message.reply_text(f"✅ Твоя короткая ссылка:\n\n{output_entry.short_url}")
             else:
                 await update.message.reply_text("📝 Введенный текст не является ссылкой.\n"
                                                 "Пожалуйста, пришли ссылку, которая начинается с http")
@@ -58,7 +58,8 @@ class Bot:
             user = update.message.from_user
             async with self.with_db_session() as db_manager:
                 db_user = await db_manager.get_or_create_user(user.id, user.username or f"user_{user.id}")
-            await update.message.reply_text("Привет! Я помогу сократить твои ссылки.\nПросто отправь мне URL.")
+            await update.message.reply_text(f"Привет!\n Я могу из длинной и некрасивой ссылки сделать короткую!\n"
+                                            f"Просто отправь мне ссылку")
         except Exception as e:
             print(f"Ошибка в start: {str(e)}")
             await update.message.reply_text("⚠️ Ошибка сервера")
