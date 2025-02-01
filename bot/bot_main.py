@@ -9,9 +9,9 @@ from db.db_usage import DatabaseManager
 
 load_dotenv()
 token = os.getenv("TOKEN")
+BASE_URL = os.getenv("BASE_URL")
 
 class Bot:
-    BASE_URL = os.getenv("BASE_URL")
     def __init__(self, token: str):
         self.token = token
         self.app = ApplicationBuilder().token(self.token).build()
@@ -35,7 +35,7 @@ class Bot:
         finally:
             await session.close()
 
-    async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE, BASE_URL=None):
+    async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             input_text = update.message.text
             user_id = update.message.from_user.id
