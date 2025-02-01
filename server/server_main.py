@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 
 from bot.bot_main import Bot
+from db.db_core import create_tables
 
 # Загружаем переменные из .env
 load_dotenv()
@@ -19,6 +20,8 @@ app = FastAPI()
 async def on_startup():
     # Инициализируем приложения бота
     await bot.app.initialize()
+    # Создаем таблицы в БД
+    await create_tables()
 
 @app.get("/")
 async def home():
