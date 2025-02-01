@@ -2,9 +2,10 @@ from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from db.models import User, InputUrl, OutputUrl
-from functional.url_to_short_url import url_to_short_url
+from functional.url_to_short_url import generate_short_code
 
 
 class DatabaseManager:
@@ -38,11 +39,11 @@ class DatabaseManager:
             print("❌ Введённый текст не является ссылкой, короткая не создаётся.")
             return None
 
-        short_url = url_to_short_url()
+        short_code = generate_short_code()
         short_entry = OutputUrl(
             user_id=input_entry.user_id,
             input_url_id=input_entry.id,
-            short_url=short_url
+            short_url=short_code
         )
 
         self.session.add(short_entry)
@@ -54,7 +55,9 @@ class DatabaseManager:
     async def get_original_url(self, short_code: str) -> Optional[str]:
         """Find original URL with short code. Return original URL"""
         result = await self.session.execute(
-            select(OutputUrl).where(OutputUrl.short_url == short_code)
+            select(OutputUrl)
+            .options(selectinload(OutputUrl.input_url))
+            .where(OutputUrl.short_url == short_code)
         )
         output_entry = result.scalar_one_or_none()
         if output_entry and output_entry.input_url:
