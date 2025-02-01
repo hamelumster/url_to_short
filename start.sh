@@ -1,1 +1,1 @@
-gunicorn -k uvicorn.workers.UvicornWorker server_main:app --bind 0.0.0.0:$PORT
+gunicorn -k uvicorn.workers.UvicornWorker server.server_main:app --bind 0.0.0.0:$PORT
